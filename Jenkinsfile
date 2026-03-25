@@ -11,6 +11,8 @@ stages {
 
   stage('Build docker image') {
     steps {
+      sh 'ls -l'
+      sh 'cat index.html'
       echo 'Building docker image'
       sh 'docker build --no-cache -t my-app .'
     }

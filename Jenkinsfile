@@ -18,8 +18,11 @@ stages {
 
   stage('Run Container') {
     steps {
-      echo 'Running Container'
-      sh 'docker run -d -p 9090:80 my-app'
+      echo 'Stopping old Container'
+      sh 'docker rm -f my-container || true'
+
+      echo 'Running new container'
+      sh 'docker run -d -p 9090:80 --name my-container my-app'
     }
   }
 }

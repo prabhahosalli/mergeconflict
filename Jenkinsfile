@@ -16,12 +16,6 @@ stages {
     }
   }
 
-#  stage('Test') {
- #   steps {
-  #    echo 'Running Tests'
-   # }
-  #}
-
   stage('Run Container') {
     steps {
       echo 'Running Container'

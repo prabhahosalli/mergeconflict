@@ -12,7 +12,7 @@ stages {
   stage('Build docker image') {
     steps {
       echo 'Building docker image'
-      sh 'docker build -t my-app.'
+      sh 'docker build -t my-app .'
     }
   }
 

@@ -1,45 +1,51 @@
 pipeline {
-  agent any
+    agent any
 
-stages {
-
-  stage ('Clean Workspace') {
-    steps {
-      deleteDir()
+    environment {
+        DOCKER_USER = 'prabha97hosalli@gmail.com'
+        IMAGE_NAME = 'my-app'
     }
-  }
-  
-  stage('clone') {
-    steps {
-      echo 'Cloning code'
-      git branch: 'master', url:
-    'https://github.com/prabhahosalli/mergeconflict.git'     
-    } 
-  }
-  
-   stage('Debug'){
-     steps {
-       sh 'pwd'
-       sh 'ls -l'
-       sh 'cat index.html'
-     }
-   }
-  
-  stage('Build docker image') {
-    steps {
-      echo 'Building docker image'
-      sh 'docker build --no-cache -t my-app $PWD'
-    }
-  }
 
-  stage('Run Container') {
-    steps {
-      echo 'Stopping old Container'
-      sh 'docker rm -f my-container || true'
+    stages {
 
-      echo 'Running new container'
-      sh 'docker run -d -p 9090:80 --name my-container my-app'
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()
+            }
+        }
+
+        stage('Clone') {
+            steps {
+                git branch: 'master', url: 'https://github.com/prabhahosalli/mergeconflict.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $DOCKER_USER/$IMAGE_NAME:latest .'
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'docker push $DOCKER_USER/$IMAGE_NAME:latest'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh 'docker rm -f my-container || true'
+                sh 'docker run -d -p 9090:80 --name my-container $DOCKER_USER/$IMAGE_NAME:latest'
+            }
+        }
     }
-  }
 }
-}
+

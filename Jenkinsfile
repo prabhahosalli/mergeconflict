@@ -6,24 +6,26 @@ stages {
   stage('clone') {
     steps {
       echo 'Cloning code'
+    } 
+  }
+
+  stage('Build docker image') {
+    steps {
+      echo 'Building docker image'
+      sh 'docker build -t my-app.'
     }
   }
 
-  stage('Build') {
-    steps {
-      echo 'Building clonned code'
-    }
-  }
+#  stage('Test') {
+ #   steps {
+  #    echo 'Running Tests'
+   # }
+  #}
 
-  stage('Test') {
+  stage('Run Container') {
     steps {
-      echo 'Running Tests'
-    }
-  }
-
-  stage('Deploy') {
-    steps {
-      echo 'Deploying an Application'
+      echo 'Running Container'
+      sh 'docker run -d -p 9090:80 my-app'
     }
   }
 }

@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'prabha97hosalli@gmail.com'
+        DOCKER_USER = 'prabha2026'
         IMAGE_NAME = 'my-app'
     }
 

@@ -6,13 +6,22 @@ stages {
   stage('clone') {
     steps {
       echo 'Cloning code'
+      git branch: 'master', url:
+    'https://github.com/prabhahosalli/mergeconflict.git'     
     } 
   }
-
+  
+   stage('Debug'){
+     steps {
+       sh 'pwd'
+       sh 'ls -l'
+     }
+   }
+  
   stage('Build docker image') {
     steps {
+      sh 'pwd'
       sh 'ls -l'
-      sh 'cat index.html'
       echo 'Building docker image'
       sh 'docker build --no-cache -t my-app .'
     }

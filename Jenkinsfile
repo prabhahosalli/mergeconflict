@@ -3,6 +3,12 @@ pipeline {
 
 stages {
 
+  stage ('Clean Workspace') {
+    steps {
+      deleteDir()
+    }
+  }
+  
   stage('clone') {
     steps {
       echo 'Cloning code'

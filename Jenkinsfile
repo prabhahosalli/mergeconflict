@@ -21,15 +21,14 @@ stages {
      steps {
        sh 'pwd'
        sh 'ls -l'
+       sh 'cat index.html'
      }
    }
   
   stage('Build docker image') {
     steps {
-      sh 'pwd'
-      sh 'ls -l'
       echo 'Building docker image'
-      sh 'docker build --no-cache -t my-app .'
+      sh 'docker build --no-cache -t my-app $PWD'
     }
   }
 
